@@ -1,224 +1,153 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chevella Chat</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chevella Chat - Feelings</title>
     <style>
-        body{font-family:Arial;background:#e5ddd5;margin:0}
-        .header{background:#075E54;color:white;padding:12px;display:flex;align-items:center;gap:10px}
-        .loginBox{max-width:320px;margin:60px auto;background:white;padding:25px;border-radius:15px;text-align:center}
-        .loginBox input{width:90%;padding:12px;margin:8px;border:1px solid #ddd;border-radius:10px}
-        .loginBox button{width:95%;padding:12px;background:#25D366;border:none;color:white;border-radius:10px;font-weight:bold;font-size:16px}
-        .topBtns{display:flex;gap:6px;padding:10px;background:#f0f0f0;flex-wrap:wrap}
-        .topBtns button{flex:1;padding:11px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;min-width:110px}
-        .chatItem{display:flex;align-items:center;gap:12px;background:white;padding:12px;border-bottom:1px solid #eee;cursor:pointer}
-        .chatItem span{font-size:13px;color:gray}
-        .hideBtn{background:#ff9500;color:white;border:none;padding:6px 10px;border-radius:8px;font-size:12px}
-        #chat{height:280px;overflow-y:auto;padding:12px}
-        .msg{background:white;padding:10px;margin:8px;border-radius:10px;max-width:75%;position:relative;cursor:pointer}
-        .msg.ai{background:#dcf8c6}
-        .msg b{color:#075E54;font-size:13px}
-        .del{position:absolute;top:3px;right:6px;background:none;border:none;color:#999;cursor:pointer}
-        .box{display:flex;padding:8px;background:white;gap:5px}
-        .box input{flex:1;padding:12px;border:1px solid #ddd;border-radius:20px}
-        .box button{background:#25D366;color:white;border:none;padding:12px 14px;border-radius:20px;font-weight:bold}
-        .schedBar{display:flex;gap:5px;padding:8px;background:#fff3cd;align-items:center}
-        .schedBar input{flex:1;padding:8px;border:1px solid #ddd;border-radius:8px;font-size:12px}
-        .schedBar button{background:#ff9500;color:white;border:none;padding:8px 10px;border-radius:8px;font-weight:bold}
-        .popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:100}
-        .popupBox{background:white;padding:20px;border-radius:15px;width:300px;text-align:center;max-height:80vh;overflow-y:auto}
-        .popupBox input{width:90%;padding:10px;margin:8px;border:1px solid #ddd;border-radius:10px}
-        .popupBox button{display:block;width:100%;margin:8px 0;padding:12px;border:none;border-radius:10px;font-weight:bold}
-        .checkRow{text-align:left;padding:6px}
-        .memberRow{display:flex;justify-content:space-between;align-items:center;background:#f9f9f9;padding:10px;margin:6px 0;border-radius:10px}
-        .memberRow button{width:auto !important;padding:6px 10px !important;margin:0 !important;background:#ff3b30 !important;color:white}
-        .groupInfo{background:#e8f5e9;padding:10px;text-align:center;font-size:13px}
-        .groupInfo button{padding:6px 10px;border:none;border-radius:8px;font-weight:bold;margin:2px}
+        *{box-sizing:border-box} body{font-family:Arial;margin:0;background:#ece5dd}
+        #login{height:100vh;display:flex;align-items:center;justify-content:center;background:#075e54}
+        .loginBox{background:white;padding:30px;border-radius:15px;text-align:center;width:320px}
+        .loginBox input{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ccc}
+        .loginBox button{width:100%;padding:12px;background:#25d366;border:none;border-radius:10px;color:white;font-weight:bold;cursor:pointer}
+        #app{display:none;height:100vh;max-width:1100px;margin:0 auto;background:white}
+        #left{width:32%;border-right:1px solid #ddd;display:flex;flex-direction:column}
+        #profile{background:#075e54;color:white;padding:12px;display:flex;gap:10px;align-items:center}
+        #profile input{background:transparent;border:none;border-bottom:1px solid white;color:white;font-size:17px;font-weight:bold;outline:none;width:130px}
+        .avatar{width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;flex-shrink:0}
+        .person{padding:12px;display:flex;gap:12px;align-items:center;cursor:pointer;border-bottom:1px solid #f0f0f0}
+        .person.active{background:#ebebeb}
+        #right{flex:1;display:flex;flex-direction:column}
+        #chatHead{background:#ededed;padding:10px 15px;display:flex;gap:10px;align-items:center;font-weight:bold}
+        #messages{flex:1;overflow-y:auto;padding:15px;background:#ece5dd}
+        .msg{background:white;padding:8px 12px;margin:5px;border-radius:10px;max-width:75%;width:fit-content;position:relative}
+        .msg.me{background:#dcf8c6;margin-left:auto}
+        .msg b{font-size:11px;color:#075e54}
+        .msg .time{font-size:10px;color:gray;display:block;text-align:right}
+        #box{background:#f0f2f5;padding:10px}
+        #boxRow{display:flex;gap:8px}
+        #box input{flex:1;padding:12px;border-radius:20px;border:none;outline:none}
+        #box button{padding:12px 14px;background:#25d366;border:none;border-radius:50%;color:white;cursor:pointer}
+        #schedRow{display:flex;gap:8px;margin-top:8px;align-items:center;font-size:12px}
+        .lock{font-size:11px;color:#075e54;text-align:center;padding:4px;background:#e8f5e9}
     </style>
 </head>
 <body>
-
-<div id="loginScreen">
-    <div class="loginBox"><h2>💬 Chevella Chat</h2><p>Your Secure WhatsApp</p>
-        <input id="loginName" placeholder="Your Name"><input id="loginPin" type="password" placeholder="PIN">
-        <button onclick="login()">Login 🔒</button></div>
-</div>
-
-<div id="listScreen" style="display:none">
-    <div class="header"><div style="flex:1"><b id="myNameShow">My Name</b><br><span style="font-size:12px">Online • My Profile</span></div>
-        <button onclick="logout()" style="background:#ff3b30;color:white;border:none;padding:7px 12px;border-radius:10px">Logout</button></div>
-    <div class="topBtns">
-        <button style="background:#25D366;color:white" onclick="openGroupPopup()">+ New Group 👥</button>
-        <button style="background:#075E54;color:white" onclick="openChat('Chevella AI 🤖')">🤖 AI Chat</button>
-        <button style="background:#ff9500;color:white" onclick="showHidden()">🙈 Hidden</button>
-        <button style="background:#8e44ad;color:white" onclick="openAddPerson()">+ Add Person 👤</button>
+<div id="login"><div class="loginBox"><h2>🔒 Chevella Chat</h2><p>Feelings Chat - Sad to Happy</p><input id="loginName" placeholder="Your Name"><input id="loginPass" type="password" placeholder="Password"><button onclick="doLogin()">Login Securely</button><p style="font-size:12px;color:gray">Demo Password: <b>1234</b></p><p id="loginErr" style="color:red"></p></div></div>
+<div id="app">
+    <div id="left">
+        <div id="profile"><div class="avatar" style="background:#25d366">👤</div><input id="myName" value="Me"><button onclick="logout()" style="margin-left:auto;background:red;color:white;border:none;padding:6px 10px;border-radius:8px;cursor:pointer">Logout</button></div>
+        <div style="padding:10px"><input id="searchBox" placeholder="🔍 Search chat..." style="width:100%;padding:10px;border-radius:20px;border:1px solid #ddd;background:#f0f2f5;outline:none" oninput="renderList()"></div>
+        <div style="padding:0 10px 10px"><button onclick="toggleHidden()" style="width:100%;padding:8px;background:#333;color:white;border:none;border-radius:8px;cursor:pointer">🙈 Show Hidden Chats</button></div>
+        <div id="chatList"></div>
+        <div style="padding:10px;border-top:1px solid #ddd"><input id="newContact" placeholder="Add new person name"><button onclick="addContact()" style="padding:8px;background:#075e54;color:white;border:none;border-radius:8px;margin-top:5px;width:100%">+ Add Contact</button></div>
     </div>
-    <div id="chatList"></div>
-    <div id="hiddenArea" style="display:none;padding:10px;background:#fff3cd;text-align:center">
-        <b>🔒 Hidden Chats</b><br><input id="hiddenPin" type="password" placeholder="Enter PIN" style="padding:10px;margin:8px;border-radius:8px;border:1px solid #ddd;width:70%">
-        <br><button onclick="unlockHidden()" style="background:#075E54;color:white;padding:10px 15px;border:none;border-radius:8px">Unlock 🙈</button>
-        <div id="hiddenList"></div>
+    <div id="right">
+        <div id="chatHead"><div class="avatar" id="headAvatar" style="background:#e91e63">P</div><div><div id="headName">Priya</div><small style="color:green;font-weight:normal">🔒 Encrypted • online</small></div><button onclick="hideChat()" style="margin-left:auto;background:#333;color:white;border:none;padding:6px 10px;border-radius:8px;cursor:pointer">🙈 Hide</button></div>
+        <div class="lock">🔒 Encrypted • 😢 = Delivered • 😊 = Read / Seen</div>
+        <div id="messages"></div>
+        <div id="box">
+            <div style="display:flex;gap:5px;margin-bottom:5px;font-size:20px;cursor:pointer"><span onclick="addEmoji('😀')">😀</span><span onclick="addEmoji('😍')">😍</span><span onclick="addEmoji('😂')">😂</span><span onclick="addEmoji('❤️')">❤️</span><span onclick="addEmoji('🔥')">🔥</span><span onclick="addEmoji('👍')">👍</span><span onclick="addEmoji('🙏')">🙏</span><span onclick="addEmoji('🎉')">🎉</span><span onclick="addEmoji('😢')">😢</span><span onclick="addEmoji('😊')">😊</span></div>
+            <div id="boxRow"><input id="text" placeholder="Type a message"><button onclick="toggleSched()" title="Schedule">⏰</button><button onclick="send()">➤</button></div>
+            <div id="schedRow" style="display:none"><span>⏰ Schedule for:</span><input type="datetime-local" id="schedTime"><button onclick="sendScheduled()" style="border-radius:8px;background:#075e54;color:white;border:none;padding:8px">Schedule Send</button><button onclick="toggleSched()" style="border-radius:8px;background:gray;color:white;border:none;padding:8px">Cancel</button></div>
+        </div>
     </div>
 </div>
-
-<div id="chatScreen" style="display:none">
-    <div class="header"><button onclick="showList()" style="background:none;border:none;color:white;font-size:20px">←</button>
-        <div style="flex:1"><b id="chatWith">Raja</b><br><span id="chatStatus" style="font-size:12px">Online</span></div>
-        <button onclick="hideCurrentChat()" style="background:#ff9500;color:white;border:none;padding:7px 8px;border-radius:8px;font-size:12px">Hide 🙈</button>
-        <button onclick="openAddMember()" style="background:#25D366;color:white;border:none;padding:7px 8px;border-radius:8px;font-size:12px">+ Add</button>
-        <button onclick="openMembersList()" style="background:white;color:#075E54;border:none;padding:7px 8px;border-radius:8px;font-size:12px">Members 👥</button>
-    </div>
-    <div id="groupInfoBar" class="groupInfo" style="display:none"></div>
-    <div id="chat"></div>
-    <div class="schedBar">⏰ <input id="schedTime" type="datetime-local"><button onclick="scheduleMsg()">Schedule</button></div>
-    <div class="box"><input id="text" placeholder="Type a message..."><button onclick="send()">Send ➤</button></div>
-    <p style="text-align:center;font-size:12px;color:gray;margin:2px">Tap message = Mark Read 😊 • Group = Add / Remove Members</p>
-</div>
-
-<div id="groupPopup" class="popup"><div class="popupBox"><h3>Create Your Own Group 👥</h3>
-    <input id="groupName" placeholder="Group Name"><div id="memberList"></div>
-    <button style="background:#25D366;color:white" onclick="createGroup()">Create Group ✅</button>
-    <button style="background:#eee" onclick="closeGroupPopup()">Cancel</button></div></div>
-
-<div id="addPersonPopup" class="popup"><div class="popupBox"><h3>Add New Person 👤</h3>
-    <input id="newPersonName" placeholder="Name - Ex: Suresh"><input id="newPersonPhone" placeholder="Phone (Optional)">
-    <button style="background:#8e44ad;color:white" onclick="addPerson()">Add Person ✅</button>
-    <button style="background:#eee" onclick="closeAddPerson()">Cancel</button></div></div>
-
-<div id="addMemberPopup" class="popup"><div class="popupBox"><h3>Add Member to <span id="addMemberGroupName"></span></h3>
-    <div id="addMemberList"></div>
-    <button style="background:#25D366;color:white" onclick="saveAddMembers()">Add Selected ✅</button>
-    <button style="background:#eee" onclick="closeAddMember()">Cancel</button></div></div>
-
-<div id="membersPopup" class="popup"><div class="popupBox"><h3>Members of <span id="membersGroupName"></span> 👥</h3>
-    <div id="membersListShow"></div>
-    <button style="background:#25D366;color:white" onclick="openAddMemberFromList()">+ Add New Member</button>
-    <button style="background:#eee" onclick="closeMembers()">Close</button></div></div>
-
-<div id="deletePopup" class="popup"><div class="popupBox"><h3>Delete Message?</h3>
-    <button style="background:#8e8e93;color:white" onclick="deleteForMe()">Delete for Me</button>
-    <button style="background:#ff3b30;color:white" onclick="deleteForEveryone()">Delete for Everyone</button>
-    <button style="background:#eee" onclick="closePopup()">Cancel</button></div></div>
-
 <script>
-    let myName=localStorage.getItem('chevella_name');
-    let myPin=localStorage.getItem('chevella_pin');
-    let currentChat='Raja'; let selectedId=null;
-    let hiddenIds=JSON.parse(localStorage.getItem('hiddenIds')||'[]');
-    let hiddenChats=JSON.parse(localStorage.getItem('hiddenChats')||'[]');
-    let readIds=JSON.parse(localStorage.getItem('readIds')||'[]');
-    let scheduled=JSON.parse(localStorage.getItem('scheduled')||'[]');
-    let groupMembers=JSON.parse(localStorage.getItem('groupMembers')||'{}'); // { "GroupName": ["Raja","Priya"] }
-
-    let defaultContacts=[
-        {name:'Raja',emoji:'👦',last:'Hi bro!',time:'10:30 AM'},
-        {name:'Priya',emoji:'👧',last:'Ok 😊',time:'Yesterday'},
-        {name:'Chevella AI 🤖',emoji:'🤖',last:'Hello! I am AI',time:'9:00 AM'},
+    let contacts=[
+        {name:"Priya", color:"#e91e63", hidden:false},
+        {name:"Rahul", color:"#2196f3", hidden:false},
+        {name:"Mom", color:"#ff9800", hidden:false},
+        {name:"College Group", color:"#9c27b0", hidden:false},
+        {name:"AI Bot 🤖", color:"#00bfa5", hidden:false},
+        {name:"Best Friend", color:"#009688", hidden:false}
     ];
-    let myGroups=JSON.parse(localStorage.getItem('myGroups')||'[]');
-    let contacts=[...defaultContacts,...myGroups];
-    let allPeople=JSON.parse(localStorage.getItem('allPeople')||'["Raja","Priya","Amma","Nanna","Suresh"]');
-    let savedContacts=JSON.parse(localStorage.getItem('myContacts')||'[]');
-    savedContacts.forEach(sc=>{ if(!contacts.find(c=>c.name===sc.name)) contacts.push(sc); });
-
-    function saveAll(){ localStorage.setItem('myGroups',JSON.stringify(myGroups)); localStorage.setItem('myContacts',JSON.stringify(contacts)); localStorage.setItem('allPeople',JSON.stringify(allPeople)); localStorage.setItem('groupMembers',JSON.stringify(groupMembers)); }
-
-    function login(){let n=document.getElementById('loginName').value;let p=document.getElementById('loginPin').value;if(!n||!p){alert('Enter Name + PIN');return;}localStorage.setItem('chevella_name',n);localStorage.setItem('chevella_pin',p);myName=n;myPin=p;showList();}
-    function logout(){if(confirm('Logout?')){localStorage.removeItem('chevella_name');localStorage.removeItem('chevella_pin');location.reload();}}
-    function showList(){
-        document.getElementById('loginScreen').style.display='none';document.getElementById('chatScreen').style.display='none';document.getElementById('listScreen').style.display='block';document.getElementById('hiddenArea').style.display='none';
-        document.getElementById('myNameShow').innerText=myName;
-        let list=document.getElementById('chatList');list.innerHTML='';
-        contacts.forEach(c=>{
-            if(hiddenChats.includes(c.name)) return;
-            list.innerHTML+=`<div class="chatItem"><div onclick="openChat('${c.name}')" style="display:flex;align-items:center;gap:12px;flex:1"><div style="width:50px;height:50px;border-radius:50%;background:#dcf8c6;display:flex;align-items:center;justify-content:center;font-size:26px">${c.emoji}</div><div style="flex:1"><b>${c.name}</b><br><span>${c.last}</span></div><span>${c.time}</span></div><button class="hideBtn" onclick="hideChat('${c.name}')">Hide 🙈</button></div>`;
+    let current="Priya";
+    let myName="Me";
+    let SECRET="chevella123";
+    let showHidden=false;
+    function encrypt(t){ return btoa(encodeURIComponent(SECRET+"::"+t)); }
+    function decrypt(t){ try{ let d=decodeURIComponent(atob(t)); if(d.startsWith(SECRET+"::")) return d.split("::").slice(1).join("::"); return "🔒 Encrypted"; }catch(e){ return t; } }
+    function addEmoji(e){ let b=document.getElementById('text'); b.value+=e; b.focus(); }
+    function doLogin(){
+        let n=document.getElementById('loginName').value;
+        let p=document.getElementById('loginPass').value;
+        if(!n){ document.getElementById('loginErr').innerText="Enter your name"; return; }
+        if(p!=="1234"){ document.getElementById('loginErr').innerText="Wrong Password! Try 1234"; return; }
+        myName=n; document.getElementById('myName').value=n;
+        localStorage.setItem("chatUser", n);
+        document.getElementById('login').style.display='none';
+        document.getElementById('app').style.display='flex';
+        renderList(); selectChat("Priya","#e91e63");
+    }
+    function logout(){ localStorage.removeItem("chatUser"); location.reload(); }
+    function addContact(){ let n=document.getElementById('newContact').value.trim(); if(!n) return; contacts.push({name:n, color:"#"+Math.floor(Math.random()*16777215).toString(16), hidden:false}); document.getElementById('newContact').value=''; renderList(); }
+    function toggleHidden(){ showHidden=!showHidden; renderList(); }
+    function hideChat(){
+        let c=contacts.find(x=>x.name===current);
+        if(c){ c.hidden=true; alert("🙈 "+current+" Hidden! Click Show Hidden Chats to see again."); renderList(); selectChat("Priya","#e91e63"); }
+    }
+    function renderList(){
+        let q=document.getElementById('searchBox').value.toLowerCase();
+        let div=document.getElementById('chatList'); div.innerHTML='';
+        contacts.filter(c=>c.name.toLowerCase().includes(q)).filter(c=> showHidden ? c.hidden : !c.hidden).forEach(c=>{
+            div.innerHTML+=`<div class="person ${c.name===current?'active':''}" onclick="selectChat('${c.name}','${c.color}')"><div class="avatar" style="background:${c.color}">${c.name[0]}</div><div><b>${c.name}</b><div style="font-size:12px;color:gray">🔒 Click to chat</div></div>${c.hidden?'<button onclick="event.stopPropagation();unhideChat(\''+c.name+'\')">Unhide</button>':''}</div>`;
         });
+        if(div.innerHTML==='') div.innerHTML='<p style="text-align:center;color:gray">No chats here</p>';
     }
-    function hideChat(name){hiddenChats.push(name);localStorage.setItem('hiddenChats',JSON.stringify(hiddenChats));alert(name+' Hidden! 🙈');showList();}
-    function hideCurrentChat(){hideChat(currentChat);showList();}
-    function showHidden(){document.getElementById('hiddenArea').style.display='block';}
-    function unlockHidden(){let pin=document.getElementById('hiddenPin').value;if(pin!==myPin){alert('Wrong PIN!');return;}let h=document.getElementById('hiddenList');h.innerHTML='<br><b>Hidden Chats:</b><br>';hiddenChats.forEach(name=>{h.innerHTML+=`<div style="background:white;padding:12px;margin:8px;border-radius:10px;display:flex;justify-content:space-between"><b>${name}</b><button onclick="unhideChat('${name}')" style="background:#25D366;color:white;border:none;padding:6px 10px;border-radius:8px">Unhide</button> <button onclick="openChat('${name}')" style="background:#075E54;color:white;border:none;padding:6px 10px;border-radius:8px">Open</button></div>`;});if(hiddenChats.length==0)h.innerHTML+='No Hidden Chats';}
-    function unhideChat(name){hiddenChats=hiddenChats.filter(n=>n!==name);localStorage.setItem('hiddenChats',JSON.stringify(hiddenChats));showList();alert(name+' Unhidden ✅');}
-
-    function openGroupPopup(){document.getElementById('groupPopup').style.display='flex';let m=document.getElementById('memberList');m.innerHTML='';allPeople.forEach(p=>{m.innerHTML+=`<div class="checkRow"><label><input type="checkbox" value="${p}"> ${p}</label></div>`;});}
-    function closeGroupPopup(){document.getElementById('groupPopup').style.display='none';}
-    function createGroup(){let gName=document.getElementById('groupName').value;if(!gName){alert('Enter Group Name');return;}let checked=[...document.querySelectorAll('#memberList input:checked')].map(e=>e.value);if(checked.length==0){alert('Select 1 member');return;}let fullName=gName+' 👥';let newGroup={name:fullName,emoji:'👥',last:'Group Created - '+checked.join(', '),time:'Now'};myGroups.push(newGroup);contacts.push(newGroup);groupMembers[fullName]=checked;saveAll();closeGroupPopup();showList();alert('Group Created! 🎉 '+gName);}
-
-    // --- STEP 4 & 5 : ADD PERSON + ADD / REMOVE MEMBER ---
-    function openAddPerson(){document.getElementById('addPersonPopup').style.display='flex';}
-    function closeAddPerson(){document.getElementById('addPersonPopup').style.display='none';}
-    function addPerson(){
-        let name=document.getElementById('newPersonName').value;if(!name){alert('Enter Name');return;}
-        if(contacts.find(c=>c.name===name)){alert('Already Exists!');return;}
-        let newContact={name:name,emoji:'👤',last:'Hi! I am new',time:'Now'};contacts.push(newContact);
-        if(!allPeople.includes(name)) allPeople.push(name);
-        saveAll();closeAddPerson();showList();alert(name+' Added! ✅ Now add him to any Group!');
+    function unhideChat(name){ let c=contacts.find(x=>x.name===name); if(c) c.hidden=false; renderList(); }
+    function selectChat(name,color){ current=name; document.getElementById('headName').innerText=name; document.getElementById('headAvatar').innerText=name[0]; document.getElementById('headAvatar').style.background=color; renderList(); load(); }
+    function toggleSched(){ let r=document.getElementById('schedRow'); r.style.display=r.style.display==='none'?'flex':'none'; }
+    async function load(){
+        let res=await fetch('/api/messages'); let data=await res.json();
+        let div=document.getElementById('messages'); div.innerHTML='';
+        let now=new Date();
+        for(let m of data){
+            if(m.deletedFor===myName) continue;
+            if(m.receiver!==current && m.sender!==current) continue;
+            if(current!=="College Group" && m.receiver!==current && m.receiver!==myName){ if(!(m.sender===current && m.receiver===myName)) continue; }
+            if(m.scheduledTime){ if(new Date(m.scheduledTime)>now) continue; }
+            // Auto mark READ when you open chat - Sad -> Happy
+            if(m.sender!==myName && m.status!=="READ" && m.receiver===myName){
+                await fetch('/api/messages/'+m.id+'/read',{method:'PUT'});
+                m.status="READ";
+            }
+            let text=decrypt(m.content);
+            let me=m.sender===myName?'me':'';
+            let time=m.createdAt?new Date(m.createdAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'';
+            let statusEmoji = m.sender===myName ? (m.status==="READ" ? "😊" : "😢") : "";
+            let schedTag=m.scheduledTime?'<span style="font-size:10px;color:#075e54"> ⏰ Scheduled</span>':'';
+            div.innerHTML+=`<div class="msg ${me}"><b>${m.sender} ${schedTag}</b><br>${text}<span class="time">${time} ${statusEmoji}</span><div style="font-size:11px;margin-top:4px"><a href="#" onclick="delForMe(${m.id});return false;">Delete For Me</a> | <a href="#" onclick="delForEveryone(${m.id});return false;" style="color:red">Delete For Everyone</a></div></div>`;
+        }
+        div.scrollTop=div.scrollHeight;
     }
-    function openAddMember(){
-        if(!currentChat.includes('👥')){alert('Open a Group first!');return;}
-        document.getElementById('addMemberGroupName').innerText=currentChat;
-        document.getElementById('addMemberPopup').style.display='flex';
-        let m=document.getElementById('addMemberList');m.innerHTML='';
-        let existing=groupMembers[currentChat]||[];
-        allPeople.forEach(p=>{
-            if(existing.includes(p)) return; // Already in group, don't show
-            m.innerHTML+=`<div class="checkRow"><label><input type="checkbox" value="${p}"> ${p}</label></div>`;
-        });
-        if(m.innerHTML=='') m.innerHTML='<p>All people already in group. Add new person first!</p>';
+    async function send(){
+        let content=document.getElementById('text').value; if(!content) return;
+        await fetch('/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sender:myName,receiver:current,content:encrypt(content)})});
+        document.getElementById('text').value='';
+        // AI CHAT
+        if(current.includes("AI Bot")){
+            setTimeout(async ()=>{
+                let reply="Hi! I am AI Bot 🤖 I got your message: '"+content+"'. How can I help you today? 😊";
+                if(content.toLowerCase().includes("hi")||content.toLowerCase().includes("hello")) reply="Hello! 😊 How are you? I am your AI Friend!";
+                if(content.toLowerCase().includes("miss")) reply="Aww 🥹 I miss you too! Don't be sad 😢, I am here 😊";
+                if(content.toLowerCase().includes("bye")) reply="Bye Bye 👋 Take care! Come back soon 😊";
+                await fetch('/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sender:"AI Bot 🤖",receiver:myName,content:encrypt(reply)})});
+                load();
+            },1000);
+        }
+        load();
     }
-    function closeAddMember(){document.getElementById('addMemberPopup').style.display='none';}
-    function saveAddMembers(){
-        let checked=[...document.querySelectorAll('#addMemberList input:checked')].map(e=>e.value);
-        if(checked.length==0){alert('Select 1 member');return;}
-        if(!groupMembers[currentChat]) groupMembers[currentChat]=[];
-        groupMembers[currentChat]=[...groupMembers[currentChat],...checked];
-        contacts.forEach(c=>{if(c.name===currentChat){c.last='Added: '+checked.join(', ');c.time='Now';}});
-        saveAll();closeAddMember();updateGroupBar();alert('Added! 🎉 '+checked.join(', '));
+    async function sendScheduled(){
+        let content=document.getElementById('text').value; let t=document.getElementById('schedTime').value;
+        if(!content||!t){ alert("Type message + Select Time"); return; }
+        await fetch('/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sender:myName,receiver:current,content:encrypt(content),scheduledTime:t})});
+        alert("⏰ Scheduled for "+t); document.getElementById('text').value=''; toggleSched(); load();
     }
-    function openMembersList(){
-        if(!currentChat.includes('👥')){alert('Open a Group to see Members!');return;}
-        document.getElementById('membersGroupName').innerText=currentChat;
-        document.getElementById('membersPopup').style.display='flex';
-        renderMembers();
-    }
-    function closeMembers(){document.getElementById('membersPopup').style.display='none';}
-    function renderMembers(){
-        let list=document.getElementById('membersListShow');let members=groupMembers[currentChat]||[];
-        if(members.length==0){list.innerHTML='<p>No members yet. Add some!</p>';return;}
-        list.innerHTML='';
-        members.forEach(m=>{
-            list.innerHTML+=`<div class="memberRow"><span>👤 ${m} ${m===myName?'(You - Admin)':''}</span><button onclick="removeMember('${m}')">Remove ✖</button></div>`;
-        });
-    }
-    function removeMember(name){
-        if(!confirm('Remove '+name+' from group?')) return;
-        groupMembers[currentChat]=groupMembers[currentChat].filter(n=>n!==name);
-        contacts.forEach(c=>{if(c.name===currentChat){c.last='Removed: '+name;c.time='Now';}});
-        saveAll();renderMembers();updateGroupBar();alert(name+' Removed! ❌');
-    }
-    function openAddMemberFromList(){closeMembers();openAddMember();}
-    function updateGroupBar(){
-        let bar=document.getElementById('groupInfoBar');
-        if(currentChat.includes('👥')){
-            let members=groupMembers[currentChat]||[];
-            bar.style.display='block';
-            bar.innerHTML=`👥 Members (${members.length}): ${members.join(', ')||'None'} &nbsp; <button style="background:#25D366;color:white" onclick="openAddMember()">+ Add</button> <button style="background:#075E54;color:white" onclick="openMembersList()">Manage / Remove</button>`;
-        } else { bar.style.display='none'; }
-    }
-
-    function openChat(name){currentChat=name;document.getElementById('listScreen').style.display='none';document.getElementById('chatScreen').style.display='block';document.getElementById('chatWith').innerText=name;document.getElementById('chatStatus').innerText=name.includes('AI')?'AI Online 🤖':'Online';updateGroupBar();load();}
-    function getAIReply(text){text=text.toLowerCase();if(text.includes('hi')||text.includes('hello'))return 'Hi '+myName+'! 😊 How are you?';if(text.includes('joke'))return 'Why did chicken cross road? To go to Chevella! 😂😂';if(text.includes('how are you'))return 'I am great! Always online for you 😊';if(text.includes('telugu'))return 'Nenu Telugu kuda matladutha! Em chestunnav? 😊';return 'Nice! 😊 Tell me more...';}
-    async function send(){let t=document.getElementById('text').value;if(!t)return;await fetch('/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:myName+' → '+currentChat,text:t})});document.getElementById('text').value='';if(currentChat.includes('AI')){setTimeout(async()=>{let reply=getAIReply(t);await fetch('/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'Chevella AI 🤖',text:reply})});load();},1000);}load();}
-    function scheduleMsg(){let t=document.getElementById('text').value;let time=document.getElementById('schedTime').value;if(!t||!time){alert('Type message + Select Time');return;}scheduled.push({text:t,chat:currentChat,time:time,sender:myName});localStorage.setItem('scheduled',JSON.stringify(scheduled));document.getElementById('text').value='';alert('Scheduled! ⏰ '+time);}
-    async function checkScheduled(){let now=new Date().toISOString().slice(0,16);let due=scheduled.filter(s=>s.time<=now);for(let s of due){await fetch('/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:s.sender+' → '+s.chat+' ⏰ Scheduled',text:s.text})});}if(due.length>0){scheduled=scheduled.filter(s=>s.time>now);localStorage.setItem('scheduled',JSON.stringify(scheduled));if(document.getElementById('chatScreen').style.display=='block')load();}}
-    function markRead(id){if(!readIds.includes(id)){readIds.push(id);localStorage.setItem('readIds',JSON.stringify(readIds));load();}}
-    async function load(){let res=await fetch('/api/messages');let msgs=await res.json();let d=document.getElementById('chat');d.innerHTML='';msgs.forEach(m=>{if(hiddenIds.includes(m.id))return;let isAI=m.name.includes('AI');let emoji=readIds.includes(m.id)?'😊':'😢';let label=readIds.includes(m.id)?'Read 😊':'Delivered 😢';d.innerHTML+=`<div class="msg ${isAI?'ai':''}" onclick="markRead('${m.id}')"><button class="del" onclick="event.stopPropagation();openPopup('${m.id}')">✖</button><b>${m.name}</b><br>${m.text}<br><span style="font-size:12px;float:right">${emoji} ${label}</span></div>`;});d.scrollTop=d.scrollHeight;}
-    function openPopup(id){selectedId=id;document.getElementById('deletePopup').style.display='flex';}
-    function closePopup(){document.getElementById('deletePopup').style.display='none';}
-    async function deleteForMe(){hiddenIds.push(selectedId);localStorage.setItem('hiddenIds',JSON.stringify(hiddenIds));closePopup();load();}
-    async function deleteForEveryone(){await fetch('/api/messages/'+selectedId,{method:'DELETE'});closePopup();load();}
-    if(myName&&myPin){showList();}
-    setInterval(()=>{if(document.getElementById('chatScreen').style.display=='block')load();checkScheduled();},2000);
+    async function delForMe(id){ if(confirm("Delete For Me? Only you will not see it.")){ await fetch('/api/messages/'+id+'/deleteforme?user='+myName,{method:'PUT'}); load(); } }
+    async function delForEveryone(id){ if(confirm("Delete For Everyone?")){ await fetch('/api/messages/'+id,{method:'DELETE'}); load(); } }
+    document.getElementById('text').addEventListener('keypress',e=>{ if(e.key==='Enter') send(); });
+    document.getElementById('myName').addEventListener('change',e=>{ myName=e.target.value; });
+    let saved=localStorage.getItem("chatUser"); if(saved){ document.getElementById('loginName').value=saved; }
+    renderList(); setInterval(load,2000);
 </script>
 </body>
 </html>
